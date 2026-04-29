@@ -1,0 +1,78 @@
+<androidx.preference.PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.PreferenceCategory
+        app:title="General">
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="modo_edicion"
+            app:title="Modo Edición"
+            app:summary="Habilita la creación, modificación y borrado de datos"
+            app:defaultValue="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Asignaturas">
+
+        <androidx.preference.CheckBoxPreference
+            app:key="adj_solo_unidades"
+            app:title="Mostrar sólo si tiene unidades"
+            app:defaultValue="false" />
+
+        <androidx.preference.CheckBoxPreference
+            app:key="adj_calificacion_media"
+            app:title="Mostrar calificación media"
+            app:defaultValue="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Unidades">
+
+        <androidx.preference.CheckBoxPreference
+            app:key="unit_solo_preguntas"
+            app:title="Mostrar sólo si tiene preguntas"
+            app:defaultValue="false" />
+
+        <androidx.preference.CheckBoxPreference
+            app:key="unit_max_calificacion"
+            app:title="Mostrar máxima calificación"
+            app:defaultValue="false" />
+
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        app:title="Cuestionario">
+
+        <androidx.preference.EditTextPreference
+            app:key="quiz_num_preguntas"
+            app:title="Número de preguntas"
+            android:inputType="number"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="10" />
+
+        <androidx.preference.SwitchPreferenceCompat
+            app:key="quiz_shuffle"
+            app:title="Barajar respuestas"
+            app:defaultValue="true" />
+
+        <androidx.preference.CheckBoxPreference
+            app:key="quiz_show_correct"
+            app:title="Mostrar respuestas correctas"
+            app:defaultValue="true" />
+
+        <androidx.preference.CheckBoxPreference
+            app:key="quiz_show_score"
+            app:title="Mostrar calificación"
+            app:defaultValue="true" />
+
+        <androidx.preference.CheckBoxPreference
+            app:key="quiz_save_max"
+            app:title="Almacenar máxima calificación"
+            app:defaultValue="true" />
+
+    </androidx.preference.PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

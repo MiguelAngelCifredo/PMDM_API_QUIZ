@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:layout_marginBottom="24dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz App"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/design_default_color_primary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Versión 1.0.26"
+        android:layout_marginBottom="32dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Desarrollado por:"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/tvNombreAlumno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Nombre del Alumno]"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="© 2026 - IES PMDM"
+        android:layout_marginTop="48dp"
+        android:textSize="12sp"/>
+
+    <Button
+        android:id="@+id/btnCerrarAbout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Volver"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+
+</LinearLayout>

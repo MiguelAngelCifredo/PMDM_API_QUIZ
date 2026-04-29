@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="32dp">
+
+        <TextView
+            android:id="@+id/tvResultadoTexto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¡Cuestionario Finalizado!"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNotaNumerica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:textColor="@color/design_default_color_primary"
+            android:text="8.5" />
+
+        <TextView
+            android:id="@+id/tvDetalleAciertos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Has acertado 17 de 20 preguntas"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btnVolverInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Volver al Menú" />
+
+    </LinearLayout>
