@@ -91,15 +91,35 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
     }
 
     private void loadModules() {
-        // Llamada asíncrona a la API
+        // 1. Obtener la preferencia del usuario
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean mostrarSoloConUnidades = prefs.getBoolean("adj_solo_unidades", false);
+
         apiService.getAsignaturas().enqueue(new Callback<List<Module>>() {
             @Override
             public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    modulesList = response.body();
+                    // Guardamos la respuesta original de la API
+                    List<Module> allModules = response.body();
+
+                    // 2. Aplicar el filtrado según la preferencia
+                    if (mostrarSoloConUnidades) {
+                        List<Module> filteredList = new ArrayList<>();
+                        for (Module m : allModules) {
+                            if (m.getTotunits() > 0) {
+                                filteredList.add(m);
+                            }
+                        }
+                        modulesList = filteredList;
+                    } else {
+                        // Si la preferencia está desactivada, mostramos todas las asignaturas
+                        modulesList = allModules;
+                    }
+
                     modulesListFull = new ArrayList<>(modulesList);
-                    adapter = new ModuleListAdapter(response.body(), ModuleListActivity.this);
+                    adapter = new ModuleListAdapter(modulesList, ModuleListActivity.this);
                     rvAsignaturas.setAdapter(adapter);
+
                 } else {
                     Toast.makeText(ModuleListActivity.this, "Error en la respuesta", Toast.LENGTH_SHORT).show();
                 }
@@ -202,42 +222,6 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
                 .setPositiveButton("Sí", (dialog, which) -> finish())
                 .setNegativeButton("No", null)
                 .show();
-    }
-
-    private void BORRAR_sendAsignaturaToApi(String nombre) {
-        Module moduloNuevo = new Module();
-        moduloNuevo.setName(nombre);
-
-        apiService.addAsignatura(moduloNuevo).enqueue(new Callback<Module.AddResponse>() { // 👈 Cambiado a AddResponse
-
-            @Override
-            public void onResponse(Call<Module.AddResponse> call, Response<Module.AddResponse> response) {
-                String msg = "";
-
-                // Usamos isSuccessful() para manejar los códigos 200-299
-                if (response.isSuccessful() && response.body() != null) {
-                    msg = "Creada con éxito";
-
-                    // OPCIONAL: Si estás en AddAsignaturaActivity, aquí llamarías a uploadImage
-                    // int nuevoId = response.body().getIdmodule();
-
-                    loadModules();
-                } else {
-                    // Manejo de errores específicos según el código HTTP
-                    switch (response.code()) {
-                        case 400 -> msg = "Nombre inválido";
-                        case 409 -> msg = "Esa asignatura ya existe";
-                        default  -> msg = "Error en el servidor: " + response.code();
-                    }
-                }
-                Toast.makeText(ModuleListActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onFailure(Call<Module.AddResponse> call, Throwable t) {
-                Toast.makeText(ModuleListActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 }

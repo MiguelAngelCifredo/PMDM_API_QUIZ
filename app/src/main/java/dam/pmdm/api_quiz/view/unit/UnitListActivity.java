@@ -82,14 +82,33 @@ public class UnitListActivity extends AppCompatActivity implements UnitListAdapt
     }
 
     private void loadUnits() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean mostrarSoloConPreguntas = prefs.getBoolean("unit_solo_preguntas", false);
+
         apiService.getUnidades(idmodule).enqueue(new Callback<List<Unit>>() {
             @Override
             public void onResponse(@NonNull Call<List<Unit>> call, @NonNull Response<List<Unit>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    UnitListAdapter adapter = new UnitListAdapter(response.body(), UnitListActivity.this);
+                    List<Unit> allUnits = response.body();
+                    List<Unit> unitsToDisplay;
+
+                    if (mostrarSoloConPreguntas) {
+                        unitsToDisplay = new java.util.ArrayList<>();
+                        for (Unit unit : allUnits) {
+                            if (unit.getTotquestions() > 0) {
+                                unitsToDisplay.add(unit);
+                            }
+                        }
+                    } else {
+                        // Si la preferencia está desactivada (false), mostramos la lista completa
+                        unitsToDisplay = allUnits;
+                    }
+
+                    UnitListAdapter adapter = new UnitListAdapter(unitsToDisplay, UnitListActivity.this);
                     rvUnidades.setAdapter(adapter);
                 }
             }
+
             @Override
             public void onFailure(@NonNull Call<List<Unit>> call, @NonNull Throwable t) {
                 Toast.makeText(UnitListActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();

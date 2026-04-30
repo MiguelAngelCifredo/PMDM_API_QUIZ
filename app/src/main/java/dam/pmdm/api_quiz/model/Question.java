@@ -10,6 +10,8 @@ public class Question implements java.io.Serializable {
     private String answer4;
     private int correct;
 
+    private int userAnswer = 0;
+
     public Question() {
     }
     public Question(int idquestion, int idunit, String title, String answer1, String answer2, String answer3, String answer4, int correct) {
@@ -87,7 +89,19 @@ public class Question implements java.io.Serializable {
         this.correct = correct;
     }
 
-    /** Clase para añadir pregunta (Sin idquestion) */
+    public int getUserAnswer() {
+        return userAnswer;
+    }
+
+    public void setUserAnswer(int userAnswer) {
+        this.userAnswer = userAnswer;
+    }
+
+    public boolean isCorrect() {
+        return userAnswer == correct;
+    }
+
+    /** Clase para añadir pregunta */
     public static class QuestionAddRequest {
         private int idunit;
         private String title;
@@ -105,7 +119,7 @@ public class Question implements java.io.Serializable {
         }
     }
 
-    /** Clase para editar pregunta (Con idquestion e idunit) */
+    /** Clase para editar pregunta */
     public static class QuestionUpdateRequest {
         private int idquestion;
         private int idunit;

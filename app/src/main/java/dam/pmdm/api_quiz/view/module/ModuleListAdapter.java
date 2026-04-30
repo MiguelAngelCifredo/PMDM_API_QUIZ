@@ -30,6 +30,7 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
     // Interfaz para manejar los clics desde la MainActivity
     public interface OnModuleClickListener {
         void onModuleClick(Module module);      // Clic normal para ver unidades
+
         void onModuleLongClick(Module module);  // Clic largo para borrar (Modo Edición)
     }
 
@@ -51,24 +52,14 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
         Context context = holder.itemView.getContext();
 
         holder.tvNombre.setText(currentModule.getName());
-
-        // --- Lógica de Preferencias ---
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean mostrarTotal = !prefs.getBoolean("adj_solo_unidades", false);
-
-        if (mostrarTotal) {
-            String msg = "";
-            switch (currentModule.getTotunits()) {
-                case 0  -> msg = "Sin unidades.";
-                case 1  -> msg = "1 Unidad.";
-                default -> msg = currentModule.getTotunits() + " Unidades.";
-            }
-            holder.tvUnidades.setText(msg);
-            holder.tvUnidades.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvUnidades.setVisibility(View.GONE);
+        String msg = "";
+        switch (currentModule.getTotunits()) {
+            case 0 -> msg = "Sin unidades.";
+            case 1 -> msg = "1 Unidad.";
+            default -> msg = currentModule.getTotunits() + " Unidades.";
         }
-        // ------------------------------
+        holder.tvUnidades.setText(msg);
+
         // Lista de colores vibrantes para educación
         int[] colors = {0xFF1ABC9C, 0xFF3498DB, 0xFF9B59B6, 0xFFE67E22, 0xFFE74C3C};
         int color = colors[currentModule.getIdmodule() % colors.length];
@@ -82,7 +73,6 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
                 .into(holder.imgAsignatura);
         // .placeholder(new ColorDrawable(color)) // Usamos un color liso mientras carga
 
-
         // Gestionamos los eventos de clic
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onModuleClick(currentModule);
@@ -90,6 +80,7 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
 
         holder.itemView.setOnLongClickListener(v -> {
             // Solo permitir clic largo si el modo edición está activo
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean modoEdicion = prefs.getBoolean("modo_edicion", false);
 
             if (modoEdicion && listener != null) {
