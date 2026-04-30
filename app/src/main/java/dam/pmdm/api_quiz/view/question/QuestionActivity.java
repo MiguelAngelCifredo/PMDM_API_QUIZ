@@ -1,14 +1,18 @@
 package dam.pmdm.api_quiz.view.question;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
@@ -29,7 +33,16 @@ public class QuestionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_question);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            lp.topMargin = systemBars.top;
+            v.setLayoutParams(lp);
+            return insets;
+        });
 
         // Recuperar IDs de navegación
         idunit = getIntent().getIntExtra("idunit", -1);
@@ -64,29 +77,35 @@ public class QuestionActivity extends AppCompatActivity {
     }
 
     private void loadQuestionData() {
-        apiService.getPreguntasCompleta(idunit, idquestion, 1, "n").enqueue(new Callback<List<Question>>() {
+            apiService.getPregunta(idquestion).enqueue(new Callback<Question>() {
             @Override
-            public void onResponse(@NonNull Call<List<Question>> call, @NonNull Response<List<Question>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    Question q = response.body().get(0);
+            public void onResponse(@NonNull Call<Question> call, @NonNull Response<Question> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Question q = response.body();
+
+                    // Rellenamos los campos de la interfaz de usuario
                     etTitle.setText(q.getTitle());
                     etA1.setText(q.getAnswer1());
                     etA2.setText(q.getAnswer2());
                     etA3.setText(q.getAnswer3());
                     etA4.setText(q.getAnswer4());
 
+                    // Actualizamos el RadioButton correspondiente a la respuesta correcta
                     switch (q.getCorrect()) {
                         case 1 -> rb1.setChecked(true);
                         case 2 -> rb2.setChecked(true);
                         case 3 -> rb3.setChecked(true);
                         case 4 -> rb4.setChecked(true);
                     }
+                } else {
+                    Log.d("OkHttp", "Aqui estoy");
+                    Toast.makeText(QuestionActivity.this, "Pregunta no encontrada", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Question>> call, @NonNull Throwable t) {
-                Toast.makeText(QuestionActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<Question> call, @NonNull Throwable t) {
+                Toast.makeText(QuestionActivity.this, "Error de red: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

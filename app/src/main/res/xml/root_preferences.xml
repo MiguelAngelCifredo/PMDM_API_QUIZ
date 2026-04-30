@@ -48,7 +48,7 @@
 
         <androidx.preference.EditTextPreference
             app:key="quiz_num_preguntas"
-            app:title="Número de preguntas"
+            app:title="Número máximo de preguntas"
             android:inputType="number"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="10" />

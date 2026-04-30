@@ -11,7 +11,7 @@ import dam.pmdm.api_quiz.view.question.QuestionFragment;
 
 public class QuizAdapter extends FragmentStateAdapter {
 
-    private List<Question> questions;
+    private final List<Question> questions;
 
     public QuizAdapter(@NonNull FragmentActivity fragmentActivity, List<Question> questions) {
         super(fragmentActivity);
@@ -21,12 +21,12 @@ public class QuizAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        // Por cada pregunta, creamos una instancia del Fragment pasándole los datos
-        return QuestionFragment.newInstance(questions.get(position));
+        return QuestionFragment.newInstance(questions.get(position), position);
     }
 
     @Override
     public int getItemCount() {
         return questions != null ? questions.size() : 0;
     }
+
 }

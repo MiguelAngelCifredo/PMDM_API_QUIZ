@@ -19,6 +19,7 @@ import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 public interface ApiService {
+
     // --- ASIGNATURAS ---
     @GET("asignatura-lst.php")
     Call<List<Module>> getAsignaturas();
@@ -61,12 +62,7 @@ public interface ApiService {
     Call<List<Question>> getPreguntas(@Query("idunit") int idunit);
 
     @GET("pregunta-get.php")
-    Call<List<Question>> getPreguntasCompleta(
-            @Query("idunit") int idunit,
-            @Query("idquestion") Integer idquestion,
-            @Query("max") int max,
-            @Query("shuffle") String shuffle
-    );
+    Call<Question> getPregunta(@Query("idquestion") int idquestion);
 
     @POST("pregunta-add.php")
     Call<Void> addPregunta(@Body Question.QuestionAddRequest request);
@@ -77,5 +73,12 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("pregunta-del.php")
     Call<Void> deletePregunta(@Field("idquestion") int idquestion);
+
+    @GET("cuestionario-get.php")
+    Call<List<Question>> getCuestionario(
+            @Query("idunit") int idUnit,
+            @Query("max") Integer max,
+            @Query("shuffle") String shuffle
+    );
 
 }

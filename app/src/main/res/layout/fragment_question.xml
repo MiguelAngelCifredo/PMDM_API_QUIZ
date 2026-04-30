@@ -14,10 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:text="Cargando pregunta..."
             android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:text="Cargando pregunta..." />
+            android:textStyle="bold" />
 
         <RadioGroup
             android:id="@+id/rgOpciones"

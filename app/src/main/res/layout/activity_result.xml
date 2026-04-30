@@ -31,11 +31,11 @@
             android:text="Has acertado 17 de 20 preguntas"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/btnVolverInicio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="Volver al Menú" />
+    <Button
+        android:id="@+id/btnVolverInicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Volver al inicio" />
 
     </LinearLayout>
