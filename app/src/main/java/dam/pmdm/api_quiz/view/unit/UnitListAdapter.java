@@ -43,19 +43,18 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
     @Override
     public void onBindViewHolder(@NonNull UnitViewHolder holder, int position) {
         Unit currentUnit = unitList.get(position);
+        Context context = holder.itemView.getContext();
 
+        // 1. Nombre de la unidad
         holder.tvNombre.setText(currentUnit.getName());
 
-        // Consultamos preferencias para mostrar u ocultar el conteo de preguntas
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean mostrarPreguntas = !prefs.getBoolean("unit_solo_preguntas", false);
+        // 2. CORRECCIÓN: El rótulo de preguntas debe aparecer SIEMPRE
+        // Independientemente de la preferencia de filtrado, mostramos el dato
+        holder.tvTotal.setText("Preguntas: " + currentUnit.getTotquestions());
+        holder.tvTotal.setVisibility(View.VISIBLE);
 
-        if (mostrarPreguntas) {
-            holder.tvTotal.setText("Preguntas: " + currentUnit.getTotquestions());
-            holder.tvTotal.setVisibility(View.VISIBLE);
-        } else {
-            holder.tvTotal.setVisibility(View.GONE);
-        }
+        // 3. Obtener preferencias para otras lógicas (clics y nota máxima)
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         // Lógica de clics
         holder.itemView.setOnClickListener(v -> {
@@ -70,6 +69,16 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
             }
             return false;
         });
+
+        // 4. Lógica de la máxima calificación (esta sí depende de una preferencia)
+        boolean mostrarMax = prefs.getBoolean("unit_max_calificacion", false);
+        if (mostrarMax) {
+            float notaMax = prefs.getFloat("max_unit_" + currentUnit.getIdunit(), 0.0f);
+            holder.tvMaxCalificacion.setVisibility(View.VISIBLE);
+            holder.tvMaxCalificacion.setText(String.format("Máx: %.1f", notaMax));
+        } else {
+            holder.tvMaxCalificacion.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -78,12 +87,13 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
     }
 
     public static class UnitViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvTotal;
+        TextView tvNombre, tvTotal, tvMaxCalificacion;
 
         public UnitViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNombre = itemView.findViewById(R.id.tvNombreUnidad);
             tvTotal = itemView.findViewById(R.id.tvTotalPreguntas);
+            tvMaxCalificacion = itemView.findViewById(R.id.tvMaxCalificacion);
         }
     }
 

@@ -25,7 +25,7 @@ import dam.pmdm.api_quiz.model.Module;
 public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.ModuleViewHolder> {
 
     private List<Module> moduleList;
-    private OnModuleClickListener listener;
+    private final OnModuleClickListener listener;
 
     // Interfaz para manejar los clics desde la MainActivity
     public interface OnModuleClickListener {
@@ -52,66 +52,76 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
         Context context = holder.itemView.getContext();
 
         holder.tvNombre.setText(currentModule.getName());
+
+        int totalReal = currentModule.getTotunits();
         String msg = "";
-        switch (currentModule.getTotunits()) {
+        switch (totalReal) {
             case 0 -> msg = "Sin unidades.";
             case 1 -> msg = "1 Unidad.";
-            default -> msg = currentModule.getTotunits() + " Unidades.";
+            default -> msg = totalReal + " Unidades.";
         }
         holder.tvUnidades.setText(msg);
 
-        // Lista de colores vibrantes para educación
+        // Carga de imagen con Glide
         int[] colors = {0xFF1ABC9C, 0xFF3498DB, 0xFF9B59B6, 0xFFE67E22, 0xFFE74C3C};
         int color = colors[currentModule.getIdmodule() % colors.length];
 
         Glide.with(context)
                 .load(RetrofitClient.getImageUrl(currentModule.getIdmodule()))
-                .skipMemoryCache(true) // Opcional: útil si cambias la imagen y quieres que se refresque
-                .diskCacheStrategy(DiskCacheStrategy.NONE) // Opcional: evita que cargue la imagen vieja si se ha editado
-                .error(new ColorDrawable(color))       // Si falla, dejamos el color
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .error(new ColorDrawable(color))
                 .centerCrop()
                 .into(holder.imgAsignatura);
-        // .placeholder(new ColorDrawable(color)) // Usamos un color liso mientras carga
 
-        // Gestionamos los eventos de clic
+        // Eventos de clic
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onModuleClick(currentModule);
         });
 
         holder.itemView.setOnLongClickListener(v -> {
-            // Solo permitir clic largo si el modo edición está activo
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             boolean modoEdicion = prefs.getBoolean("modo_edicion", false);
-
             if (modoEdicion && listener != null) {
                 listener.onModuleLongClick(currentModule);
                 return true;
             }
             return false;
         });
-    }
 
+        // --- CORRECCIÓN DE PREFERENCIAS Y CALIFICACIÓN ---
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean mostrarMedia = prefs.getBoolean("adj_calificacion_media", false);
+
+        if (mostrarMedia) {
+            float mediaAsignatura = prefs.getFloat("media_asig_" + currentModule.getIdmodule(), 0.0f);
+            holder.tvMediaAsignatura.setVisibility(View.VISIBLE);
+            holder.tvMediaAsignatura.setText(String.format("Media: %.1f", mediaAsignatura));
+        } else {
+            holder.tvMediaAsignatura.setVisibility(View.GONE);
+        }
+    }
     @Override
     public int getItemCount() {
         return moduleList != null ? moduleList.size() : 0;
     }
 
-    // --- MÉTODO PARA EL BUSCADOR ---
     public void filterList(List<Module> filteredList) {
         this.moduleList = filteredList;
         notifyDataSetChanged();
     }
 
-    // Clase interna ViewHolder
     public static class ModuleViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNombre, tvUnidades;
+        TextView tvNombre, tvUnidades, tvMediaAsignatura;
         ImageView imgAsignatura;
 
         public ModuleViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNombre = itemView.findViewById(R.id.tvNombreAsignatura);
             tvUnidades = itemView.findViewById(R.id.tvTotalUnidades);
+            tvMediaAsignatura =  itemView.findViewById(R.id.tvMediaAsignatura);
             imgAsignatura = itemView.findViewById(R.id.imgAsignatura);
         }
     }
+
 }

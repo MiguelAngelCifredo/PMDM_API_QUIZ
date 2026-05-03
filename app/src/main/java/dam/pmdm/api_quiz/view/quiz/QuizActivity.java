@@ -42,6 +42,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
     private final Map<Integer, Integer> userAnswers = new HashMap<>();
 
     private int idunit;
+    private int idAsignatura;
     private String unitName;
     private TextView tvProgress;
     private Button btnNext, btnPrev;
@@ -64,6 +65,7 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
         // Recuperar datos del Intent
         idunit = getIntent().getIntExtra("idunit", -1);
         unitName = getIntent().getStringExtra("unitName");
+        idAsignatura = getIntent().getIntExtra("idAsignatura", -1);
 
         // Inicializar vistas
         viewPager = findViewById(R.id.viewPagerQuestions);
@@ -200,22 +202,28 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
             Question q = questionsList.get(i);
             Integer respuestaUsuario = userAnswers.get(i);
 
-            // Si el usuario respondió (el mapa contiene la posición), lo guardamos en el objeto
             if (respuestaUsuario != null) {
                 q.setUserAnswer(respuestaUsuario);
-
-                // Si además coincide con la correcta, sumamos acierto
                 if (respuestaUsuario == q.getCorrect()) {
                     aciertos++;
                 }
             } else {
-                // Si no respondió, nos aseguramos de que sea 0 (opcional pero recomendado)
+                // Si no respondió, marcamos con 0 (o el valor que definas para "sin respuesta")
                 q.setUserAnswer(0);
             }
         }
 
-        // 2. Cálculo de la nota
+        // 2. Cálculo de la nota (Escala de 0 a 10)
         double nota = (double) aciertos / questionsList.size() * 10;
+
+        // --- REGISTRO DE DATOS ---
+        // Verificamos que los IDs sean válidos antes de guardar
+        if (idAsignatura != -1 && idunit != -1) {
+            registrarCalificacionesExactas(idAsignatura, idunit, nota);
+            android.util.Log.d("QUIZ_SAVE", "Datos guardados - Asignatura: " + idAsignatura + " Nota: " + nota);
+        } else {
+            android.util.Log.e("QUIZ_SAVE", "Error: IDs no válidos. Asig: " + idAsignatura + " Unit: " + idunit);
+        }
 
         // 3. Configurar el Intent para la pantalla de resultados
         Intent intent = new Intent(this, QuizResultActivity.class);
@@ -223,11 +231,39 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
         intent.putExtra("total", questionsList.size());
         intent.putExtra("nota", nota);
 
-        // ENVIAR LA LISTA: Aquí está la clave para que no llegue nulo
-        // Casteamos a ArrayList para asegurar la compatibilidad con Serializable
+        // Enviamos la lista para que la pantalla de resultados pueda mostrar el resumen
         intent.putExtra("questionsList", (ArrayList<Question>) questionsList);
 
         startActivity(intent);
-        finish(); // Cerramos QuizActivity para que el usuario no pueda volver atrás al test
+
+        // Cerramos la actividad para que no se pueda volver atrás al cuestionario ya terminado
+        finish();
+    }
+
+    private void registrarCalificacionesExactas(int idAsignatura, int idUnit, double nuevaNota) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // 1. ACTUALIZAR MÁXIMO DE LA UNIDAD (Matemáticamente simple)
+        String keyMax = "max_unit_" + idUnit;
+        float maxActual = prefs.getFloat(keyMax, 0.0f);
+        if (nuevaNota > maxActual) {
+            editor.putFloat(keyMax, (float) nuevaNota);
+        }
+
+        // 2. ACTUALIZAR MEDIA DE LA ASIGNATURA (Precisión total)
+        String keyMediaAsig = "media_asig_" + idAsignatura;
+        String keyCountAsig = "count_asig_" + idAsignatura;
+
+        float mediaAnterior = prefs.getFloat(keyMediaAsig, 0.0f);
+        int n = prefs.getInt(keyCountAsig, 0); // Número de cuestionarios hechos hasta ahora
+
+        // Fórmula: NuevaMedia = ((MediaAnterior * n) + NuevaNota) / (n + 1)
+        float nuevaMedia = (float) (((mediaAnterior * n) + nuevaNota) / (n + 1));
+
+        editor.putFloat(keyMediaAsig, nuevaMedia);
+        editor.putInt(keyCountAsig, n + 1); // Incrementamos el total de intentos
+
+        editor.apply();
     }
 }

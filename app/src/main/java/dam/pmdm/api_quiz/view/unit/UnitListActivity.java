@@ -143,15 +143,17 @@ public class UnitListActivity extends AppCompatActivity implements UnitListAdapt
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean modoEdicion = prefs.getBoolean("modo_edicion", false);
 
-        if (modoEdicion) { // Ver listado de preguntas
+        if (modoEdicion) {  // Modo Edición: Ver listado de preguntas
             Intent intent = new Intent(this, QuestionListActivity.class);
             intent.putExtra("idunit", unit.getIdunit());
             intent.putExtra("unitName", unit.getName());
             startActivity(intent);
-        } else { // Realizar cuestionario
+        } else { // Modo Cuestionario: Realizar cuestionario
             Intent intent = new Intent(this, QuizActivity.class);
             intent.putExtra("idunit", unit.getIdunit());
             intent.putExtra("unitName", unit.getName());
+            int idParaPasar = (unit.getIdmodule() > 0) ? unit.getIdmodule() : idmodule;
+            intent.putExtra("idAsignatura", idParaPasar);
             startActivity(intent);
         }
     }
@@ -159,8 +161,7 @@ public class UnitListActivity extends AppCompatActivity implements UnitListAdapt
     @Override
     public void onUnitLongClick(Unit unit) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("modo_edicion", false)) {
-            // Editar la unidad
+        if (prefs.getBoolean("modo_edicion", false)) { // Editar la unidad
             Intent intent = new Intent(this, UnitActivity.class);
             intent.putExtra("idunit", unit.getIdunit());
             intent.putExtra("unitName", unit.getName());

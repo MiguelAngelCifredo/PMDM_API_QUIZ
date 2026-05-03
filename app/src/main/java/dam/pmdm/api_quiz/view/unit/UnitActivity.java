@@ -3,6 +3,7 @@ package dam.pmdm.api_quiz.view.unit;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,6 +12,10 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.material.textfield.TextInputEditText;
 import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
@@ -33,7 +38,16 @@ public class UnitActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_unit);
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            lp.topMargin = systemBars.top;
+            v.setLayoutParams(lp);
+            return insets;
+        });
 
         apiService = RetrofitClient.getClient().create(ApiService.class);
         etNombre = findViewById(R.id.etNombreUnit);
@@ -133,13 +147,11 @@ public class UnitActivity extends AppCompatActivity {
                                 default  -> msg = "Error: " + response.code();
                             }
                             Toast.makeText(UnitActivity.this, msg, Toast.LENGTH_SHORT).show();
-                            Log.d("MACIFREDO", "msg = " + msg);
                         }
 
                         @Override
                         public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                             Toast.makeText(UnitActivity.this, "Error al borrar la unidad", Toast.LENGTH_SHORT).show();
-                            Log.d("MACIFREDO", "msg = FALLO GORDO" );
                         }
                     });
                 })

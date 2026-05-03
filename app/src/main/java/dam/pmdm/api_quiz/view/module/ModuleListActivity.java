@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
@@ -91,18 +92,15 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
     }
 
     private void loadModules() {
-        // 1. Obtener la preferencia del usuario
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean mostrarSoloConUnidades = prefs.getBoolean("adj_solo_unidades", false);
 
         apiService.getAsignaturas().enqueue(new Callback<List<Module>>() {
             @Override
-            public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
+            public void onResponse(@NonNull Call<List<Module>> call, @NonNull Response<List<Module>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Guardamos la respuesta original de la API
                     List<Module> allModules = response.body();
 
-                    // 2. Aplicar el filtrado según la preferencia
                     if (mostrarSoloConUnidades) {
                         List<Module> filteredList = new ArrayList<>();
                         for (Module m : allModules) {
@@ -112,7 +110,6 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
                         }
                         modulesList = filteredList;
                     } else {
-                        // Si la preferencia está desactivada, mostramos todas las asignaturas
                         modulesList = allModules;
                     }
 
@@ -126,8 +123,8 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
             }
 
             @Override
-            public void onFailure(Call<List<Module>> call, Throwable t) {
-                Toast.makeText(ModuleListActivity.this, "Error de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<List<Module>> call, @NonNull Throwable t) {
+                Toast.makeText(ModuleListActivity.this, "Error de conexión", Toast.LENGTH_LONG).show();
             }
         });
     }
