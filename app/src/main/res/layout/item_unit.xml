@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,8 +45,8 @@
                 android:textSize="14sp"
                 android:textStyle="bold"
                 android:visibility="gone"
-                tools:visibility="visible"
-                tools:text="Máx: 9.5" />
+                tools:text="Máx: 9.5"
+                tools:visibility="visible" />
         </LinearLayout>
     </LinearLayout>
 

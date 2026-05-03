@@ -89,7 +89,6 @@ public class ModuleListAdapter extends RecyclerView.Adapter<ModuleListAdapter.Mo
             return false;
         });
 
-        // --- CORRECCIÓN DE PREFERENCIAS Y CALIFICACIÓN ---
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean mostrarMedia = prefs.getBoolean("adj_calificacion_media", false);
 

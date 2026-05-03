@@ -34,9 +34,11 @@ import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
 import dam.pmdm.api_quiz.controller.RetrofitClient;
 import dam.pmdm.api_quiz.model.Module;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,7 +72,7 @@ public class ModuleActivity extends AppCompatActivity {
         Button btnGuardar = findViewById(R.id.btnGuardar);
         Button btnEliminar = findViewById(R.id.btnEliminar);
 
-        // 1. Configurar modo Edición si recibimos extras
+        // Configurar modo Edición si recibimos extras
         if (getIntent().hasExtra("idmodule")) {
             idModule = getIntent().getIntExtra("idmodule", -1);
             String nombre = getIntent().getStringExtra("moduleName");
@@ -86,7 +88,7 @@ public class ModuleActivity extends AppCompatActivity {
             }
         }
 
-        // 2. Listeners
+        // Listeners
         ivAsignatura.setOnClickListener(v -> openGallery());
         btnGuardar.setOnClickListener(v -> saveAsignatura());
         btnEliminar.setOnClickListener(v -> confirmDelete());
@@ -200,7 +202,7 @@ public class ModuleActivity extends AppCompatActivity {
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            Toast.makeText(ModuleActivity.this, "Error al subir la imagen", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -234,4 +236,5 @@ public class ModuleActivity extends AppCompatActivity {
             while ((len = in.read(buf)) > 0) out.write(buf, 0, len);
         }
     }
+
 }

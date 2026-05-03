@@ -9,51 +9,51 @@
     <ImageView
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@mipmap/ic_launcher_round"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="24dp"
+        android:src="@mipmap/ic_launcher_round" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Quiz App"
+        android:textColor="@color/design_default_color_primary"
         android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="@color/design_default_color_primary"/>
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Versión 1.0.26"
-        android:layout_marginBottom="32dp"/>
+        android:layout_marginBottom="32dp"
+        android:text="Versión 1.0.26" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Desarrollado por:"
-        android:textStyle="italic"/>
+        android:textStyle="italic" />
 
     <TextView
         android:id="@+id/tvNombreAlumno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="[Nombre del Alumno]"
-        android:textSize="20sp"
         android:textColor="@android:color/black"
-        android:layout_marginTop="8dp"/>
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="© 2026 - IES PMDM"
         android:layout_marginTop="48dp"
-        android:textSize="12sp"/>
+        android:text="© 2026 - IES PMDM"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btnCerrarAbout"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Volver"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:text="Volver" />
 
 </LinearLayout>

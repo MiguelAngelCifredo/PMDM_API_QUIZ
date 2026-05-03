@@ -1,7 +1,6 @@
 package dam.pmdm.api_quiz.view.unit;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,7 +20,7 @@ import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
 import dam.pmdm.api_quiz.controller.RetrofitClient;
 import dam.pmdm.api_quiz.model.Unit;
-import dam.pmdm.api_quiz.view.module.ModuleActivity;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,13 +59,11 @@ public class UnitActivity extends AppCompatActivity {
         idunit = getIntent().getIntExtra("idunit", -1);
         String currentName = getIntent().getStringExtra("unitName");
 
-        if (idunit != -1) {
-            // MODO EDICIÓN
+        if (idunit != -1) { // MODO EDICIÓN
             tvTitle.setText("Editar Unidad");
             etNombre.setText(currentName);
             btnEliminar.setVisibility(View.VISIBLE);
-        } else {
-            // MODO CREACIÓN
+        } else { // MODO CREACIÓN
             tvTitle.setText("Nueva Unidad");
         }
 

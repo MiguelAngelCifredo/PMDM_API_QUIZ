@@ -116,9 +116,7 @@ public class UnitListActivity extends AppCompatActivity implements UnitListAdapt
         });
     }
 
-    /**
-     * Navega a UnitActivity en modo creación.
-     */
+     // Navega a UnitActivity en modo creación.
     private void setupFab() {
         FloatingActionButton fabAdd = findViewById(R.id.fabAddUnidad);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -136,8 +134,7 @@ public class UnitListActivity extends AppCompatActivity implements UnitListAdapt
         }
     }
 
-    // --- Implementación de UnitListAdapter.OnUnitClickListener ---
-
+    // Implementación de UnitListAdapter.OnUnitClickListener ---
     @Override
     public void onUnitClick(Unit unit) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);

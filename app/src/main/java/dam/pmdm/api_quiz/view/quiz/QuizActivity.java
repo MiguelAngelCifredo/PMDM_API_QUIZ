@@ -83,11 +83,9 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
         // Lógica del botón Siguiente / Finalizar
         btnNext.setOnClickListener(v -> {
             int current = viewPager.getCurrentItem();
-            if (current < questionsList.size() - 1) {
-                // Si hay más preguntas, avanzamos
+            if (current < questionsList.size() - 1) { // Si hay más preguntas, avanzamos
                 viewPager.setCurrentItem(current + 1);
-            } else {
-                // Si es la última, pedimos confirmación antes de corregir
+            } else { // Si es la última, pedimos confirmación antes de corregir
                 confirmarFinalizacionManual();
             }
         });
@@ -117,25 +115,22 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
     private void updateUI(int position) {
         if (questionsList.isEmpty()) return;
 
-        // 1. Texto (1 / 10)
+        // Texto (1 / 10)
         tvProgress.setText((position + 1) + " / " + questionsList.size());
 
-        // 2. Barra de progreso (0 a 100)
+        // Barra de progreso (0 a 100)
         int progressValue = (int) (((float) (position + 1) / questionsList.size()) * 100);
         quizProgressBar.setProgress(progressValue);
 
-        // 3. Botón Anterior (Solo visible si no es la primera)
+        // Botón Anterior (Solo visible si no es la primera)
         btnPrev.setVisibility(position == 0 ? android.view.View.INVISIBLE : android.view.View.VISIBLE);
 
-        // 4. Texto del botón principal
+        // Texto del botón principal
         btnNext.setText(position == questionsList.size() - 1 ? "Finalizar" : "Siguiente");
     }
 
     private void loadQuestions() {
-        // 1. Acceder a las preferencias compartidas
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        // Obtener el valor como String y limpiar espacios
         String maxStr = prefs.getString("quiz_num_preguntas", "10").trim();
         int maxQuestions;
 
@@ -244,21 +239,18 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
 
-        // 1. ACTUALIZAR MÁXIMO DE LA UNIDAD (Matemáticamente simple)
         String keyMax = "max_unit_" + idUnit;
         float maxActual = prefs.getFloat(keyMax, 0.0f);
         if (nuevaNota > maxActual) {
             editor.putFloat(keyMax, (float) nuevaNota);
         }
 
-        // 2. ACTUALIZAR MEDIA DE LA ASIGNATURA (Precisión total)
         String keyMediaAsig = "media_asig_" + idAsignatura;
         String keyCountAsig = "count_asig_" + idAsignatura;
 
         float mediaAnterior = prefs.getFloat(keyMediaAsig, 0.0f);
         int n = prefs.getInt(keyCountAsig, 0); // Número de cuestionarios hechos hasta ahora
 
-        // Fórmula: NuevaMedia = ((MediaAnterior * n) + NuevaNota) / (n + 1)
         float nuevaMedia = (float) (((mediaAnterior * n) + nuevaNota) / (n + 1));
 
         editor.putFloat(keyMediaAsig, nuevaMedia);
@@ -266,4 +258,5 @@ public class QuizActivity extends AppCompatActivity implements QuizAdapter.QuizF
 
         editor.apply();
     }
+
 }

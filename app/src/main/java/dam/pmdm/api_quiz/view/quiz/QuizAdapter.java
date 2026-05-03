@@ -71,7 +71,7 @@ public class QuizAdapter extends FragmentStateAdapter {
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.fragment_question, container, false);
 
-            // 1. Inicializar vistas
+            // Inicializar vistas
             TextView tvTitle = v.findViewById(R.id.tvEnunciado);
             RadioGroup rgOpciones = v.findViewById(R.id.rgOpciones);
             RadioButton rb1 = v.findViewById(R.id.rbAnswer1);
@@ -79,14 +79,12 @@ public class QuizAdapter extends FragmentStateAdapter {
             RadioButton rb3 = v.findViewById(R.id.rbAnswer3);
             RadioButton rb4 = v.findViewById(R.id.rbAnswer4);
 
-            // 2. Setear textos
             tvTitle.setText(question.getTitle());
             rb1.setText(question.getAnswer1());
             rb2.setText(question.getAnswer2());
             rb3.setText(question.getAnswer3());
             rb4.setText(question.getAnswer4());
 
-            // 3. Configurar el listener de selección
             rgOpciones.setOnCheckedChangeListener((group, checkedId) -> {
                 int answer = 0;
                 if (checkedId == R.id.rbAnswer1) answer = 1;
@@ -96,8 +94,7 @@ public class QuizAdapter extends FragmentStateAdapter {
 
                 // Notificamos a la Activity a través de la interfaz
                 if (getActivity() instanceof OnAnswerSelectedListener) {
-                    ((OnAnswerSelectedListener) getActivity())
-                            .onAnswerSelected(position, answer);
+                    ((OnAnswerSelectedListener) getActivity()).onAnswerSelected(position, answer);
                 }
             });
 

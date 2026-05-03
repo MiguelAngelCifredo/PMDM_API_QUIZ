@@ -11,12 +11,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
+
 import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.model.Question;
 
 public class QuizReviewActivity extends AppCompatActivity {
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,4 +54,5 @@ public class QuizReviewActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
 }

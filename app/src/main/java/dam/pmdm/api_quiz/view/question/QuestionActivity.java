@@ -1,7 +1,6 @@
 package dam.pmdm.api_quiz.view.question;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -18,6 +17,7 @@ import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
 import dam.pmdm.api_quiz.controller.RetrofitClient;
 import dam.pmdm.api_quiz.model.Question;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,7 +98,6 @@ public class QuestionActivity extends AppCompatActivity {
                         case 4 -> rb4.setChecked(true);
                     }
                 } else {
-                    Log.d("OkHttp", "Aqui estoy");
                     Toast.makeText(QuestionActivity.this, "Pregunta no encontrada", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -18,9 +18,8 @@ import dam.pmdm.api_quiz.model.Unit;
 
 public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitViewHolder> {
 
-    private List<Unit> unitList;
-    private OnUnitClickListener listener;
-    private Context context;
+    private final List<Unit> unitList;
+    private final OnUnitClickListener listener;
 
     public interface OnUnitClickListener {
         void onUnitClick(Unit unit);      // Clic corto (Cuestionario o Listado Preguntas)
@@ -35,7 +34,7 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
     @NonNull
     @Override
     public UnitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
+        Context context = parent.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.item_unit, parent, false);
         return new UnitViewHolder(view);
     }
@@ -45,18 +44,13 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
         Unit currentUnit = unitList.get(position);
         Context context = holder.itemView.getContext();
 
-        // 1. Nombre de la unidad
         holder.tvNombre.setText(currentUnit.getName());
-
-        // 2. CORRECCIÓN: El rótulo de preguntas debe aparecer SIEMPRE
-        // Independientemente de la preferencia de filtrado, mostramos el dato
         holder.tvTotal.setText("Preguntas: " + currentUnit.getTotquestions());
         holder.tvTotal.setVisibility(View.VISIBLE);
 
-        // 3. Obtener preferencias para otras lógicas (clics y nota máxima)
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // Lógica de clics
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onUnitClick(currentUnit);
         });
@@ -70,7 +64,6 @@ public class UnitListAdapter extends RecyclerView.Adapter<UnitListAdapter.UnitVi
             return false;
         });
 
-        // 4. Lógica de la máxima calificación (esta sí depende de una preferencia)
         boolean mostrarMax = prefs.getBoolean("unit_max_calificacion", false);
         if (mostrarMax) {
             float notaMax = prefs.getFloat("max_unit_" + currentUnit.getIdunit(), 0.0f);

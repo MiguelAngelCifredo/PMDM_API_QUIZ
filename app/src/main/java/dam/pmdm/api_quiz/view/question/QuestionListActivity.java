@@ -20,6 +20,7 @@ import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.controller.ApiService;
 import dam.pmdm.api_quiz.controller.RetrofitClient;
 import dam.pmdm.api_quiz.model.Question;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,4 +95,5 @@ public class QuestionListActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
 }

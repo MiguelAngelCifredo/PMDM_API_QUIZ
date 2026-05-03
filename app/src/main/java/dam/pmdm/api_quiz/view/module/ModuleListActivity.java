@@ -34,6 +34,7 @@ import dam.pmdm.api_quiz.model.Module;
 import dam.pmdm.api_quiz.view.about.AboutActivity;
 import dam.pmdm.api_quiz.view.settings.SettingsActivity;
 import dam.pmdm.api_quiz.view.unit.UnitListActivity;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -158,10 +159,8 @@ public class ModuleListActivity extends AppCompatActivity implements ModuleListA
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Esto "infla" el archivo XML del menú en la Toolbar
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        // Configuración del buscador (SearchView) si lo tienes
         MenuItem searchItem = menu.findItem(R.id.action_search);
         if (searchItem != null) {
             SearchView searchView = (SearchView) searchItem.getActionView();

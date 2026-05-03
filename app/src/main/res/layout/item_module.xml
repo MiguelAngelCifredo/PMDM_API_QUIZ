@@ -44,13 +44,13 @@
                 android:id="@+id/tvNombreAsignatura"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 android:shadowColor="#BB000000"
                 android:shadowDx="2"
                 android:shadowDy="2"
                 android:shadowRadius="2"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:textStyle="bold"
                 tools:text="Nombre Asignatura" />
 
             <LinearLayout
@@ -76,8 +76,8 @@
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:text="Media: 8.5" />
+                    tools:text="Media: 8.5"
+                    tools:visibility="visible" />
             </LinearLayout>
 
         </LinearLayout>

@@ -5,7 +5,7 @@ public class Module {
     private int idmodule;
     private String name;
     private int totunits;
-    private int unitsToDisplay;
+
     public Module() {
     }
 
@@ -37,14 +37,6 @@ public class Module {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getUnitsToDisplay() {
-        return unitsToDisplay;
-    }
-
-    public void setUnitsToDisplay(int unitsToDisplay) {
-        this.unitsToDisplay = unitsToDisplay;
     }
 
     public static class AddResponse {

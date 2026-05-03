@@ -15,14 +15,12 @@ import dam.pmdm.api_quiz.R;
 import dam.pmdm.api_quiz.model.Question;
 
 public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapter.QViewHolder> {
-    private List<Question> list;
-
-    private int idunit;
-    private int idunitInternal;
+    private final List<Question> list;
+    private final int idunit;
 
     public QuestionListAdapter(List<Question> list, int idunit) {
         this.list = list;
-        this.idunitInternal = idunit;
+        this.idunit = idunit;
     }
 
     @NonNull
@@ -40,7 +38,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
         // Al hacer clic en cualquier parte de la fila, vamos a editar
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), QuestionActivity.class);
-            intent.putExtra("idunit", this.idunitInternal);
+            intent.putExtra("idunit", this.idunit);
             intent.putExtra("idquestion", q.getIdquestion());
             v.getContext().startActivity(intent);
         });
@@ -49,7 +47,7 @@ public class QuestionListAdapter extends RecyclerView.Adapter<QuestionListAdapte
     @Override
     public int getItemCount() { return list.size(); }
 
-    static class QViewHolder extends RecyclerView.ViewHolder {
+    public static class QViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
         QViewHolder(View v) {
             super(v);
